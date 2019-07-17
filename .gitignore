@@ -84,6 +84,7 @@ typings/
 node_modules/
 build
 bundle.js
+bundle.js.gz
 build/bundle.js
 build/bundle.js.gz
 .DS_Store
