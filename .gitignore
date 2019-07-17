@@ -85,6 +85,7 @@ node_modules/
 build
 bundle.js
 build/bundle.js
+build/bundle.js.gz
 .DS_Store
 *.tgz
 my-app*
