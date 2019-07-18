@@ -1,7 +1,6 @@
-import HomePage from './pages/HomePage';
+import ProductListPage from './pages/plp';
 import MinRecShop from './pages/MinRecHome';
 import NotFoundPage from './pages/NotFoundPage';
-import ArticleListPage from './pages/ArticleListPage';
 import App from './App';
 
 export default [
@@ -9,7 +8,7 @@ export default [
     ...App,
     routes: [
       {
-        ...HomePage,
+        ...ProductListPage,
         path: '/',
         exact: true
       },
@@ -17,10 +16,6 @@ export default [
         ...MinRecShop,
         path:'/minrec',
         exact: true
-      },
-      {
-        path: '/articles/:id',
-        ...ArticleListPage
       },
       {
         ...NotFoundPage

@@ -13,10 +13,12 @@ import { renderRoutes } from 'react-router-config';
 import reducers from './reducers';
 import Routes from './Routes';
 
+
 const state = window.__PRELOADED_STATE__;
 delete window.__PRELOADED_STATE__;
 
-const store = createStore(reducers, state, applyMiddleware(thunk));
+const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
+const store = createStoreWithMiddleware(reducers , window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 ReactDOM.hydrate(
   <Provider store={store}>
