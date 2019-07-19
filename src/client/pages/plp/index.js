@@ -6,27 +6,36 @@ import { Link} from "react-router-dom";
 
 import { connect } from 'react-redux';
 import {fetchProducts} from '../../actions/productActions';
+import {syncCart} from '../../actions/cartActions'
 
 class ProductListPage extends Component {
 
-  state = {
-    grid:'',
-    limit:3,
-    skip:0,
-    filters:{
-      brand:[],
-      frets:[],
-      wood:[],
-      price:[]
-    }
+  constructor(props) {
+    super(props);
+    this.state = {
+      test: '0',
+      grid:'',
+      limit:3,
+      skip:0,
+      isLoadingInitialSSRState: true,
+      filters:{
+        brand:[],
+        frets:[],
+        wood:[],
+        price:[]
+      }
+    };
   }
 
   componentDidMount(){
     this.props.fetchProducts(
-        this.state.skip,
-        this.state.limit,
-        this.state.filters
+      this.state.skip,
+      this.state.limit,
+      this.state.filters
     )
+    
+    this.props.syncCart();
+    
   }
 
   loadMoreProducts = () => {
@@ -107,6 +116,6 @@ const loadData = async store => {
 }
 
 export default {
-  component: connect(mapStateToProps, {fetchProducts})(ProductListPage),
-  loadData: loadData
+  component: connect(mapStateToProps, {fetchProducts, syncCart})(ProductListPage),
+  loadData,
 }

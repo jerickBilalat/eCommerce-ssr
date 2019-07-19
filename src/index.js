@@ -46,11 +46,11 @@ app.get('*', (req, res) => {
     .map(promise => {
       if (promise) {
         // create a wrapper promise to always resolve even if the inner promise resolve or not so Promise.all render all pages
-        const wrapperPromise = new Promise((resolve, reject) => {
+        const wrappedPromise = new Promise((resolve, reject) => {
           // when the inner prommise is resolve or rejected, we resolve the wrapper promise
           promise.then(resolve).catch(resolve);
         });
-        return wrapperPromise
+        return wrappedPromise
       }
       return null;
     });

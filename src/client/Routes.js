@@ -1,7 +1,10 @@
 import ProductListPage from './pages/plp';
+import PrdouctDetailPage from './pages/pdp';
+import Cart from './pages/cartPage';
 import MinRecShop from './pages/MinRecHome';
 import NotFoundPage from './pages/NotFoundPage';
 import App from './App';
+import cartPage from './pages/cartPage';
 
 export default [
   {
@@ -10,6 +13,16 @@ export default [
       {
         ...ProductListPage,
         path: '/',
+        exact: true
+      },
+      {
+        ...PrdouctDetailPage,
+        path: '/product_detail/:id',
+        exact: true
+      },
+      {
+        ...cartPage,
+        path: '/cart',
         exact: true
       },
       {

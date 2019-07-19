@@ -51,11 +51,24 @@ export function fetchProducts(skip = 0, limit = 3, filters = [], prevState = [])
                 return dispatch(fetchProductsSucceeded(data));
             })
             .catch(err => {
-                dispatch(fetchProductsFailed(err.message));
+                return dispatch(fetchProductsFailed(err.message));
             });
     };
 }
 
+export function getProductDetail(id){
+    return dispatch => {
+        return api
+            .fetchSingleFilteredProduct(id)
+            .then( res => {
+                const product = res.data[0];
+                return dispatch({
+                    type: GET_PRODUCT_DETAIL,
+                    payload: product
+                })
+            })
+    }
+}
 export function clearProductDetail(){
     return {
         type: CLEAR_PRODUCT_DETAIL,
@@ -63,16 +76,3 @@ export function clearProductDetail(){
     }
 }
 
-export function getProductDetail(id){
-
-    const request = axios.get(`${API_SERVER_BASE_URL}/api/product/articles_by_id?id=${id}&type=single`)
-    .then(response=>{
-        return response.data[0]
-    });
-
-    return {
-        type: GET_PRODUCT_DETAIL,
-        payload: request
-    }
-
-}

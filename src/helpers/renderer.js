@@ -8,6 +8,7 @@ import { Helmet } from 'react-helmet';
 import Routes from '../client/Routes';
 
 export default (req, store, context) => {
+  console.log("FROM SERVER", store.getState())
   const content = renderToString(
     <Provider store={store}>
       <StaticRouter location={req.path} context={context}>
