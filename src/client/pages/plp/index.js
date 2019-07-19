@@ -7,6 +7,7 @@ import { Link} from "react-router-dom";
 import { connect } from 'react-redux';
 import {fetchProducts} from '../../actions/productActions';
 import {syncCart} from '../../actions/cartActions'
+import Header from '../../components/Header';
 
 class ProductListPage extends Component {
 
@@ -59,6 +60,7 @@ class ProductListPage extends Component {
     const {limit} = this.state;
     return (
       <React.Fragment>
+        <Header />
         <div className="row">
           <div id="titlebar">
             <div className="container">

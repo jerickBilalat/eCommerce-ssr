@@ -8,6 +8,7 @@ import { clearCart, flashMessage } from "../../actions/cartActions";
 import { fetchProducts } from "../../actions/productActions";
 import { Link } from "react-router-dom";
 import ScrollTo from "../../components/scrollTo";
+import Header from '../../components/Header';
 
 
 import {
@@ -177,6 +178,7 @@ class CartPage extends Component {
   render() {
     return (
       <React.Fragment>
+        <Header />
         <div className="row">
           <div id="titlebar">
             <div className="container">

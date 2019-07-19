@@ -9,7 +9,6 @@ const App = ({ route }) => {
   return (
     <Fragment>
       <div className="container">
-        <Header />
         <ErrorBoundary>{renderRoutes(route.routes)}</ErrorBoundary>
       </div>
       <Footer />

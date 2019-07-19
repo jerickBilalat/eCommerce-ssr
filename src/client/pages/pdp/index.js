@@ -5,7 +5,7 @@ import Widgets from "../../components/pageSideWidgets";
 import { getProductDetail, clearProductDetail } from '../../actions/productActions';
 import { increaseCartItemQuantity, syncCart } from '../../actions/cartActions';
 import { Link } from "react-router-dom";
-
+import Header from '../../components/Header';
 
 class productDetailPage extends Component {
 
@@ -38,6 +38,7 @@ class productDetailPage extends Component {
     const {prodDetail} = this.props.products;
     return (
       <React.Fragment>
+        <Header />
         {prodDetail && 
           (
             <div className="row">
