@@ -1,19 +1,47 @@
 import React, { Fragment } from 'react';
 import { renderRoutes } from 'react-router-config';
 import PropTypes from 'prop-types';
+import { ToastContainer, toast } from 'react-toastify';
 import ErrorBoundary from './components/ErrorBoundry';
 import Footer from './components/Footer';
 
-const App = ({ route }) => {
-  return (
-    <Fragment>
-      <div className="container">
-        <ErrorBoundary>{renderRoutes(route.routes)}</ErrorBoundary>
-      </div>
-      <Footer />
-    </Fragment>
-  );
-};
+class App extends React.Component {
+  notify = (status, message) => {
+    switch (status) {
+      case 'success':
+        return toast.success(message, {
+          position: toast.POSITION.TOP_RIGHT
+        });
+      case 'error':
+        return toast.error(message, {
+          position: toast.POSITION.TOP_RIGHT
+        });
+      case 'info':
+        return toast.info(message, {
+          position: toast.POSITION.BOTTOM_LEFT
+        });
+      case 'warn':
+        return toast.warn(message, {
+          position: toast.POSITION.BOTTOM_RIGHT
+        });
+      default:
+        return toast('Default Notification !');
+    }
+  };
+
+  render() {
+    const { route } = this.props;
+    return (
+      <Fragment>
+        <ToastContainer />
+        <div className="container">
+          <ErrorBoundary>{renderRoutes(route.routes, { notify: this.notify })}</ErrorBoundary>
+        </div>
+        <Footer />
+      </Fragment>
+    );
+  }
+}
 
 App.propTypes = {
   route: PropTypes.objectOf(PropTypes.any)

@@ -1,136 +1,135 @@
-import React, { Component, Fragment } from "react";
-import { connect } from "react-redux";
-import currency from "currency.js";
-import { getSubTotal, getShippingTotal } from "../../reducers/cartReducer";
-import FlashMessage from "../../components/flashMessage";
-import { toast } from "react-toastify";
-import { clearCart, flashMessage } from "../../actions/cartActions";
-import { fetchProducts } from "../../actions/productActions";
-import { Link } from "react-router-dom";
-import ScrollTo from "../../components/scrollTo";
-import Header from '../../components/Header';
-
-
+import React, { Component, Fragment } from 'react';
+import { connect } from 'react-redux';
+import currency from 'currency.js';
+import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
+import { getSubTotal, getShippingTotal } from '../../reducers/cartReducer';
+import FlashMessage from '../../components/flashMessage';
 import {
+  clearCart,
+  flashMessage,
   syncCart,
   deleteCartItem,
   increaseCartItemQuantity,
   decreaseCartItemQuantity
-} from "../../actions/cartActions";
+} from '../../actions/cartActions';
+import { fetchProducts } from '../../actions/productActions';
+import ScrollTo from '../../components/scrollTo';
+import Header from '../../components/Header';
 
-import Cart from "./cart";
-import OrderConfirm from "./orderConfirm";
+import Cart from './cart';
+import OrderConfirm from './orderConfirm';
 
 class CartPage extends Component {
   state = {
     showOrderConfirm: false,
     formFields: {
-      name: "",
-      email: "",
-      phone: "",
-      message: ""
+      name: '',
+      email: '',
+      phone: '',
+      message: ''
     },
     formErrors: {}
   };
 
-  updateFormState = event => {  
-    if(!event.isTrusted) return;
-    
+  componentDidMount() {
+    const { dispatch } = this.props;
+    dispatch(fetchProducts(0, 1000, [], []));
+    dispatch(syncCart());
+  }
+
+  updateFormState = event => {
+    const { state } = this;
+    if (!event.isTrusted) return;
+
     const field = event.target.name;
-    let formFields = { ...this.state.formFields };
+    const formFields = { ...state.formFields };
     formFields[field] = event.target.value;
-    return this.setState({ formFields });
+    this.setState({ formFields });
   };
+
   submitForm = event => {
+    const { state } = this;
     event.preventDefault();
 
     if (!this.courseFormIsValid()) {
-      return toast.error("Form is not valid");
+      return toast.error('Form is not valid');
     }
-    if(this.state.formFields.message === "") {
-      const formFields = { ...this.state.formFields};
-      this.setState({formFields});
+    if (state.formFields.message === '') {
+      const formFields = { ...state.formFields };
+      this.setState({ formFields });
     }
     this.setState({ showOrderConfirm: true });
     return window.scrollTo(0, 140);
   };
 
   submitOrderForm = event => {
+    const { dispatch, history } = this.props;
     event.preventDefault();
-    this.props.dispatch(clearCart());
-    this.props.dispatch(flashMessage(null));
-    toast.success("Order submitted");
-    this.setState({showOrderConfirm: false});
-    this.props.history.push('/shop');
-  }
+    dispatch(clearCart());
+    dispatch(flashMessage(null));
+    toast.success('Order submitted');
+    this.setState({ showOrderConfirm: false });
+    history.push('/shop');
+  };
 
   courseFormIsValid = () => {
-    let  isFormValid = true;
+    let isFormValid = true;
     const errors = {};
     const { formFields } = this.state;
 
     const validEmailPattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const phoneRegex = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
 
-    if(formFields.name.length <= 0){
+    if (formFields.name.length <= 0) {
       isFormValid = false;
-      errors.name = "Name is required";
+      errors.name = 'Name is required';
     }
-    
-    if(formFields.email.length <= 0){
+
+    if (formFields.email.length <= 0) {
       isFormValid = false;
-      errors.email = "Email is required";
-    } else if(!validEmailPattern.test(String(formFields.email).toLowerCase())) {
+      errors.email = 'Email is required';
+    } else if (!validEmailPattern.test(String(formFields.email).toLowerCase())) {
       isFormValid = false;
-      errors.email = "Enter a valid email";
+      errors.email = 'Enter a valid email';
     }
-    
-    
-    let phoneNumber = formFields.phone;
+
+    const phoneNumber = formFields.phone;
     if (phoneRegex.test(phoneNumber)) {
-        let formattedPhoneNumber = phoneNumber.replace(phoneRegex, "($1) $2-$3");
-        this.setState({ formFields: {phone: formattedPhoneNumber}})
+      const formattedPhoneNumber = phoneNumber.replace(phoneRegex, '($1) $2-$3');
+      this.setState({ formFields: { phone: formattedPhoneNumber } });
     } else {
       isFormValid = false;
-      errors.phone = "Enter a valid phone number";
+      errors.phone = 'Enter a valid phone number';
     }
-    
-    
-    this.setState({formErrors: errors});
+
+    this.setState({ formErrors: errors });
     return isFormValid;
-  }
+  };
 
-  componentDidMount() {
-    this.props.dispatch(fetchProducts(0, 1000, [], []));
-    this.props.dispatch(syncCart());
-  }
-
-  deleteCartItem = id => {
-    this.props.dispatch(deleteCartItem(id));
+  doDeleteCartItem = id => {
+    const { dispatch } = this.props;
+    dispatch(deleteCartItem(id));
   };
 
   increaseQuantity = (productDetials, differential) => {
-    this.props.dispatch(increaseCartItemQuantity(productDetials, differential));
+    const { dispatch } = this.props;
+    dispatch(increaseCartItemQuantity(productDetials, differential));
   };
 
   decreaseQuantity = (productDetials, differential) => {
-    this.props.dispatch(decreaseCartItemQuantity(productDetials, differential));
+    const { dispatch } = this.props;
+    dispatch(decreaseCartItemQuantity(productDetials, differential));
   };
 
   renderContent = () => {
-    const {
-      props,
-      state,
-      deleteCartItem,
-      increaseQuantity,
-      decreaseQuantity
-    } = this;
-  
+    const { props, state } = this;
+
     if (state.showOrderConfirm)
       return (
         <Fragment>
           <OrderConfirm
-            formFields={this.state.formFields}
+            formFields={state.formFields}
             cartItems={props.cart.cartItems}
             subTotal={props.subTotal}
             shippingTotal={props.shippingTotal}
@@ -144,19 +143,19 @@ class CartPage extends Component {
       <Fragment>
         <ScrollTo />
         <Cart
-          formFields={this.state.formFields}
+          formFields={state.formFields}
           updateFormState={this.updateFormState}
-          formErrors={this.state.formErrors}
+          formErrors={state.formErrors}
           submitForm={this.submitForm}
           cartItems={props.cart.cartItems}
           products={props.toShop}
           subTotal={props.subTotal}
           shippingTotal={props.shippingTotal}
           total={props.total}
-          deleteCartItem={deleteCartItem}
+          deleteCartItem={this.doDeleteCartItem}
           doRenderOrderConfirm={() => this.setState({ showOrderConfirm: true })}
-          increaseQuantity={increaseQuantity}
-          decreaseQuantity={decreaseQuantity}
+          increaseQuantity={this.increaseQuantity}
+          decreaseQuantity={this.decreaseQuantity}
         />
       </Fragment>
     );
@@ -184,17 +183,19 @@ class CartPage extends Component {
             <div className="container">
               <div className="row">
                 <div className="col-md-12">
-
                   <h2>Cart</h2>
-                  
+
                   <nav id="breadcrumbs">
                     <ul>
-                      <li><Link to={"/"}>Home</Link></li>
-                      <li><Link to={"/shop"}>Shop</Link></li>
+                      <li>
+                        <Link to="/">Home</Link>
+                      </li>
+                      <li>
+                        <Link to="/shop">Shop</Link>
+                      </li>
                       <li>Cart</li>
                     </ul>
                   </nav>
-
                 </div>
               </div>
             </div>
@@ -208,11 +209,11 @@ class CartPage extends Component {
 }
 
 function mapStateToProps(state) {
-  const subTotal = getSubTotal(state),
-    shippingTotal = getShippingTotal(state),
-    total = currency(subTotal)
-      .add(shippingTotal)
-      .format();
+  const subTotal = getSubTotal(state);
+  const shippingTotal = getShippingTotal(state);
+  const total = currency(subTotal)
+    .add(shippingTotal)
+    .format();
   return {
     cart: state.cart,
     flashMessage: state.cart.flashMessage,
@@ -223,9 +224,9 @@ function mapStateToProps(state) {
   };
 }
 
-const loadData = async (store) => await store.dispatch(syncCart());
+const loadData = async store => await store.dispatch(syncCart()); // eslint-disable-line no-return-await
 
 export default {
   component: connect(mapStateToProps)(CartPage),
   loadData
-}
+};

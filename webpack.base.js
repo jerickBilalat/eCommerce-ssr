@@ -12,6 +12,14 @@ module.exports = {
             ['@babel/env', { targets: { browsers: ['last 2 versions'] } }]
           ]
         }
+      },
+      {
+        test: /\.css$/,
+        loader: 'style-loader'
+      },
+      {
+        test: /\.css$/,
+        loader: 'css-loader'
       }
     ]
   }

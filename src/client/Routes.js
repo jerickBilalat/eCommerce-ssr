@@ -4,6 +4,9 @@ import MinRecShop from './pages/MinRecHome';
 import NotFoundPage from './pages/NotFoundPage';
 import App from './App';
 import cartPage from './pages/cartPage';
+import withPageNotification from './components/hoc/withPageNotification';
+
+const ProductListPageWithNotif = withPageNotification(ProductListPage);
 
 export default [
   {

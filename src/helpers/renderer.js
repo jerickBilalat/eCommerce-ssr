@@ -24,6 +24,7 @@ export default (req, store, context) => {
                 ${helmet.link.toString()}
                 <link href="/css/style.css" rel="stylesheet">
                 <link href="/css/blue.css" rel="stylesheet">
+                <link href="/css/ReactToastify.css" rel="stylesheet">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
             </head>
             <body>
