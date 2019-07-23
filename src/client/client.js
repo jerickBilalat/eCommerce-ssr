@@ -10,12 +10,11 @@ import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import { renderRoutes } from 'react-router-config';
+import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
 import reducers from './reducers';
 import Routes from './Routes';
-import { composeWithDevTools } from 'redux-devtools-extension';
 
-
-export const state = window.__PRELOADED_STATE__;
+const state = window.__PRELOADED_STATE__;
 delete window.__PRELOADED_STATE__;
 
 const store = createStore(reducers, state, composeWithDevTools(applyMiddleware(thunk)));

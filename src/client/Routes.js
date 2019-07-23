@@ -1,6 +1,5 @@
 import ProductListPage from './pages/plp';
 import PrdouctDetailPage from './pages/pdp';
-import Cart from './pages/cartPage';
 import MinRecShop from './pages/MinRecHome';
 import NotFoundPage from './pages/NotFoundPage';
 import App from './App';
@@ -27,7 +26,7 @@ export default [
       },
       {
         ...MinRecShop,
-        path:'/minrec',
+        path: '/minrec',
         exact: true
       },
       {
