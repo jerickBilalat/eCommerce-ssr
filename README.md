@@ -1,8 +1,8 @@
 # SSR eCommerce
 
-React Server Side Rendering demo project.
+React Server Side Rendering eCommerce demo project.
 
-Demo: [Click to see DEMO]()
+Demo: [Click to see DEMO](https://ssrshop.herokuapp.com/)
 
 ## Getting Started
 
